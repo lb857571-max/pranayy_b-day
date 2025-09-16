@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday Pranay</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Floating zig-zag text */
+    .floating-text {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: red;
+      font-size: 2em;
+      font-weight: bold;
+      text-shadow: 0 0 10px red, 0 0 20px red;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .floating-text span {
+      position: absolute;
+      white-space: nowrap;
+      animation: zigzag 12s linear infinite;
+    }
+
+    /* Zig-zag animation */
+    @keyframes zigzag {
+      0% { transform: translate(0vw, 100vh); }
+      25% { transform: translate(25vw, 70vh); }
+      50% { transform: translate(-25vw, 40vh); }
+      75% { transform: translate(25vw, 10vh); }
+      100% { transform: translate(0vw, -20vh); }
+    }
+
+    /* Photo container */
+    .photo-container {
+      width: 350px;
+      height: 450px;
+      transform-style: preserve-3d;
+      transition: transform 0.2s ease;
+    }
+
+    .photo-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      border: 5px solid white;
+      box-shadow: 
+        0 0 15px skyblue,
+        0 0 30px skyblue,
+        0 0 45px white;
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-text" id="floatingText"></div>
+
+  <div class="photo-container" id="photoBox">
+    <img src="pranay_ready.jpg" alt="Pranay">
+  </div>
+
+  <script>
+    // Generate zig-zag floating text randomly
+    const floatingText = document.getElementById("floatingText");
+    for (let i = 0; i < 20; i++) {
+      const span = document.createElement("span");
+      span.textContent = "Happy Birthday Pranay";
+      span.style.top = Math.random() * 100 + "vh";
+      span.style.left = Math.random() * 100 + "vw";
+      span.style.animationDuration = 8 + Math.random() * 10 + "s";
+      span.style.fontSize = (1.2 + Math.random() * 1.5) + "em";
+      floatingText.appendChild(span);
+    }
+
+    // 360° rotatable photo
+    const photoBox = document.getElementById("photoBox");
+    let isDragging = false;
+    let startX, startY, rotateX = 0, rotateY = 0;
+
+    document.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      let dx = e.clientX - startX;
+      let dy = e.clientY - startY;
+      rotateX -= dy * 0.3;
+      rotateY += dx * 0.3;
+      photoBox.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      startX = e.clientX;
+      startY = e.clientY;
+    });
+  </script>
+</body>
+</html>
